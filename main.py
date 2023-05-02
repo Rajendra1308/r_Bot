@@ -48,8 +48,6 @@ async def on_member_join(member: discord.Member):
     channel = client.get_channel(1102782529162977372)  # this is channel ID from Discord
 
 
-
-
 '''
 It will detect when user has left the server and print the message
 '''
@@ -59,6 +57,29 @@ It will detect when user has left the server and print the message
 async def on_member_remove(member: discord.Member):
     channel = client.get_channel(1102782529162977372)  # this is channnel ID from Discord
     await channel.send(f'Goodbye {member.name}!')
+
+
+@client.command(pass_context=True)
+async def join(ctx: discord.ext.commands.Context):
+    if ctx.author.voice:
+        channel = ctx.message.author.voice.channel
+        await channel.connect()
+    else:
+        await ctx.send("You must be in a voice channel to run this command!")
+
+
+'''
+
+'''
+
+
+@client.command(pass_context=True)
+async def leave(ctx: discord.ext.commands.Context):
+    if ctx.voice_client:
+        await ctx.guild.voice_client.disconnect(force=True)
+        await ctx.send("I left the voice channel")
+    else:
+        await ctx.send("I am not in the voice channel")
 
 
 # Token is a way of linking the discord bot with our code -> Do not share it with anyone
