@@ -1,6 +1,6 @@
 import random
-
 import discord
+
 from discord.ext import commands
 from discord import FFmpegPCMAudio
 
@@ -17,7 +17,15 @@ client = commands.Bot(command_prefix='!', intents=intents)
 '''
 When the bot is ready for receiving commands it will execute this function
 '''
+'''
+IMPORTANCE OF await keyword
 
+The await keyword in Python is used to wait for a coroutine to complete before executing the next line of code. In this specific code, the change function calls the stop and play functions using the await keyword.
+
+If you remove the await keyword from the function calls, then the code won't wait for the functions to complete their execution before moving on to the next line. This may cause unexpected behavior or errors, especially if the functions modify some shared resource, such as a database or a file.
+
+In short, removing the await keyword may cause the code to execute out of order and lead to unintended consequences.
+'''
 
 @client.event
 async def on_ready():
@@ -71,6 +79,20 @@ It will detect when user has left the server and print the message
 async def on_member_remove(member: discord.Member):
     channel = client.get_channel(1102782529162977372)  # this is channnel ID from Discord
     await channel.send(f'Goodbye {member.name}!')
+    
+    """
+    Detect Specific words
+    Listen for message in voice channel 
+    and print the message
+    """
+
+# @client.event
+# async def on_message(message):
+#     if message.content == "hi":
+
+    
+
+    
 
 
 '''
@@ -112,7 +134,8 @@ Pause Song
 
 @client.command(pass_context=True)
 async def pause(ctx: discord.ext.commands.Context):
-    voice: discord.VoiceProtocol = discord.utils.get(client.voice_clients,guild=ctx.guild)  # where is our bot is , what is it currently playing
+    voice: discord.VoiceProtocol = discord.utils.get(client.voice_clients,
+                                                     guild=ctx.guild)  # where is our bot is , what is it currently playing
     if voice.is_playing():
         voice.pause()
     else:
@@ -140,22 +163,36 @@ STOP Song
 
 @client.command(pass_context=True)
 async def stop(ctx: discord.ext.commands.Context):
-    voice: discord.VoiceProtocol = discord.utils.get(client.voice_clients,guild=ctx.guild)  # where is our bot is , what is it currently playing
+    voice: discord.VoiceProtocol = discord.utils.get(client.voice_clients,
+                                                     guild=ctx.guild)  # where is our bot is , what is it currently playing
     voice.stop()
+
 
 @client.command(pass_context=True)
 async def play(ctx: discord.ext.commands.Context):
-    voice:discord.VoiceProtocol = ctx.guild.voice_client  # where is our bot is , what is it currently playing
-    song_list=['Future - Low Life (feat. The Weeknd).mp3','The Weeknd - After Hours (Audio)(1).mp3','The Weeknd - Blinding Lights.mp3','The Weeknd - I Feel It Coming ft. Daft Punk (Official Video)(1).mp3','The Weeknd - Is There Someone Else (Official Audio).mp3','The Weeknd - Less Than Zero.mp3','The Weeknd - Out of Time.mp3','The Weeknd - Pray For Me.mp3','The Weeknd - Save Your Tears (Official Audio).mp3','The Weeknd - Wasted Times (Official Audio).mp3','Daft Punk (feat. Julian Casablancas) - Instant Crush [Random Access Memories].mp3','Daft Punk - Digital Love (HD).mp3','Daft Punk - Get Lucky (Feat. Pharrell Williams).mp3','Daft Punk - Giorgio by Moroder (Official Audio).mp3','Daft Punk - Lose Yourself To Dance (Feat. Pharrell Williams).mp3','Daft Punk - One More Time [HQ].mp3','Daft Punk - The Game Of Love.mp3','Daft Punk - Touch (Official Audio) ft. Paul Williams.mp3','Daft Punk - Veridis Quo.mp3','Give Life Back to Music.mp3','Lil Keed - Snake snake snake snake.mp3']
-    x:int=random.randint(0,len(song_list)-1)
-    source=FFmpegPCMAudio(song_list[x])
-    player=voice.play(source)
+    voice: discord.VoiceProtocol = ctx.guild.voice_client  # where is our bot is , what is it currently playing
+    song_list = ['Future - Low Life (feat. The Weeknd).mp3', 'The Weeknd - After Hours (Audio)(1).mp3',
+                 'The Weeknd - Blinding Lights.mp3',
+                 'The Weeknd - I Feel It Coming ft. Daft Punk (Official Video)(1).mp3',
+                 'The Weeknd - Is There Someone Else (Official Audio).mp3', 'The Weeknd - Less Than Zero.mp3',
+                 'The Weeknd - Out of Time.mp3', 'The Weeknd - Pray For Me.mp3',
+                 'The Weeknd - Save Your Tears (Official Audio).mp3', 'The Weeknd - Wasted Times (Official Audio).mp3',
+                 'Daft Punk (feat. Julian Casablancas) - Instant Crush [Random Access Memories].mp3',
+                 'Daft Punk - Digital Love (HD).mp3', 'Daft Punk - Get Lucky (Feat. Pharrell Williams).mp3',
+                 'Daft Punk - Giorgio by Moroder (Official Audio).mp3',
+                 'Daft Punk - Lose Yourself To Dance (Feat. Pharrell Williams).mp3',
+                 'Daft Punk - One More Time [HQ].mp3', 'Daft Punk - The Game Of Love.mp3',
+                 'Daft Punk - Touch (Official Audio) ft. Paul Williams.mp3', 'Daft Punk - Veridis Quo.mp3',
+                 'Give Life Back to Music.mp3', 'Lil Keed - Snake snake snake snake.mp3']
+    x: int = random.randint(0, len(song_list) - 1)
+    source = FFmpegPCMAudio(song_list[x])
+    player = voice.play(source)
+
 
 @client.command(pass_context=True)
 async def change(ctx: discord.ext.commands.Context):
-     stop(ctx)
-     play(ctx)
-
+    await stop(ctx)
+    await play(ctx)
 
 
 @client.command(pass_context=True)
@@ -166,10 +203,10 @@ async def leave(ctx: discord.ext.commands.Context):
     else:
         await ctx.send("I am not in the voice channel")
 
-
+    
 
 '''
 RUN
 '''
 # Token is a way of linking the discord bot with our code -> Do not share it with anyone
-client.run('MTEwMjgwMTA0MDU3MjY4MjMxMA.GwbmWR.ZMjhMgWjxOkoX9XXewjWDp13pEF6PuhazGdDAM')
+client.run('')
