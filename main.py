@@ -28,8 +28,10 @@ In short, removing the await keyword may cause the code to execute out of order 
 '''
 
 
+
 @client.event
 async def on_ready():
+    await client.change_presence(status=discord.Status.idle,activity=discord.Activity(type=discord.ActivityType.listening,name="Spotify")) # the bot will default to this status
     print('Bot Ready!')  # user will not see this, it's for the implementer
     print('--------------------------')
 
@@ -251,10 +253,104 @@ async def ban_error(ctx, error):
         await ctx.send('You do not have Permissions to ban people!')
 
 
+'''
+Embed Message
+'''
+
+
+# Python Docs
+@client.command()
+async def python_docs(ctx: discord.ext.commands.Context):
+    embed_message = discord.Embed(title="Python", url="https://docs.python.org/3/",
+                                  description='These are the Official Python Docs', colour=0x333e48)
+    embed_message.set_author(name=ctx.author.name, url=ctx.author.avatar, icon_url=ctx.author.avatar)
+    embed_message.set_thumbnail(url='https://www.python.org/static/img/python-logo.png')
+    embed_message.add_field(name="Access the Full Video",
+                            value="https://www.youtube.com/watch?v=rfscVS0vtbw&t=6596s&pp=ygUFcHRob24%3D", inline=False)
+
+    await ctx.send(embed=embed_message)
+
+
+# Java Docs
+
+@client.command()
+async def java_docs(ctx: discord.ext.commands.Context):
+    embed_message = discord.Embed(title="Java", url="https://docs.oracle.com/en/java/",
+                                  description='These are the Official Java Docs', colour=0xe1251d)
+    embed_message.set_author(name=ctx.author.name, url=ctx.author.avatar, icon_url=ctx.author.avatar)
+    embed_message.set_thumbnail(url='https://dev.java/assets/images/java-logo-vector.png')
+    embed_message.add_field(name="Access the Full Video",
+                            value="https://www.youtube.com/watch?v=A74TOX803D0&t=8s&pp=ygUJamF2YSBwbGF5", inline=False)
+    await ctx.send(embed=embed_message)
+
+
+# JavaScript Docs
+@client.command()
+async def javascript_docs(ctx: discord.ext.commands.Context):
+    embed_message = discord.Embed(title="JavaScript", url="https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+                                  description='These are the Official JavaScript Docs', colour=0xe0e722)
+    embed_message.set_author(name=ctx.author.name, url=ctx.author.avatar, icon_url=ctx.author.avatar)
+    embed_message.set_thumbnail(
+        url='https://images.squarespace-cdn.com/content/v1/58d20c79725e25b221549193/1521098258210-W9FBV72SMJJX3LESUA7Z/js.jpg?format=2500w')
+    embed_message.add_field(name="Access the Full Video",
+                            value="https://www.youtube.com/watch?v=PkZNo7MFNFg&t=6311s&pp=ygULanMgdHV0b3JpYWw%3D",
+                            inline=False)
+    await ctx.send(embed=embed_message)
+
+
+# HTML
+@client.command()
+async def html_docs(ctx: discord.ext.commands.Context):
+    embed_message = discord.Embed(title="HTML", url="https://developer.mozilla.org/en-US/docs/Web/HTML",
+                                  description='These are the official HTML docs', colour=0xe1251d)
+    embed_message.set_author(name=ctx.author.name, url=ctx.author.avatar, icon_url=ctx.author.avatar)
+    embed_message.set_thumbnail(url='https://happycoding.io/tutorials/html/images/html-3.png')
+    embed_message.add_field(name="Access the Full Video",
+                            value="https://www.youtube.com/watch?v=kUMe1FH4CHE&pp=ygUbaHRtbCB0dXRvcmlhbCBmb3IgYmVnaW5uZXJz",
+                            inline=False)
+    await ctx.send(embed=embed_message)
+
+
+# CSS
+@client.command()
+async def css_docs(ctx: discord.ext.commands.Context):
+    embed_message = discord.Embed(title="CSS", url="https://developer.mozilla.org/en-US/docs/Web/CSS",
+                                  description='These are the official CSS docs', colour=0x002855)
+    embed_message.set_author(name=ctx.author.name, url=ctx.author.avatar, icon_url=ctx.author.avatar)
+    embed_message.set_thumbnail(
+        url='https://cdn.dribbble.com/users/66221/screenshots/1655604/media/6cb82a9bedeb912f8a8c864a1dfad9fb.png')
+    embed_message.add_field(name="Access the Full Video",
+                            value="https://www.youtube.com/watch?v=OXGznpKZ_sA&pp=ygUMY3NzIHR1dG9yaWFs", inline=False)
+    await ctx.send(embed=embed_message)
+
+
+# C
+@client.command()
+async def c_docs(ctx: discord.ext.commands.Context):
+    embed_message = discord.Embed(title="C", url="https://www.learn-c.org/",
+                                  description='These are resources to learn C programming', colour=0x00a2e1)
+    embed_message.set_author(name=ctx.author.name, url=ctx.author.avatar, icon_url=ctx.author.avatar)
+    embed_message.set_thumbnail(
+        url='https://assets.toptal.io/images?url=https://bs-uploads.toptal.io/blackfish-uploads/components/blog_post_page/content/cover_image_file/cover_image/1275967/regular_1708x683_cover-0828_AfterAllTheseYearstheWorldisStillPoweredbyCProgramming_Razvan_Newsletter-2b9ea38294bb08c5aea1f0c1cb06732f.png')
+    embed_message.add_field(name="Access the Full Video",
+                            value="https://www.youtube.com/watch?v=KJgsSFOSQv0&pp=ygUKYyB0dXRvcmlhbA%3D%3D",
+                            inline=False)
+    await ctx.send(embed=embed_message)
+
+
+# Linux
+@client.command()
+async def linux_docs(ctx: discord.ext.commands.Context):
+    embed_message = discord.Embed(title="Linux", url="https://www.linux.org/",
+                                  description='These are resources to learn Linux', colour=0xffce00)
+    embed_message.set_author(name=ctx.author.name,url=ctx.author.avatar, icon_url=ctx.author.avatar)
+    embed_message.set_thumbnail(url='https://albukairiyah.com/wp-content/uploads/2021/05/Linux.png')
+    embed_message.add_field(name="Access the Full Video", value="https://www.youtube.com/watch?v=sWbUDq4S6Y8&t=11520s&pp=ygUObGludXggdHV0b3JpYWw%3D",
+                            inline=False)
+    await ctx.send(embed=embed_message)
 
 
 '''
 RUN
 '''
 # Token is a way of linking the discord bot with our code -> Do not share it with anyone
-client.run('')
