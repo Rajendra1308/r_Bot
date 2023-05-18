@@ -31,13 +31,14 @@ In short, removing the await keyword may cause the code to execute out of order 
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.idle,activity=discord.Activity(type=discord.ActivityType.listening,name="Spotify")) # the bot will default to this status
+    await client.change_presence(status=discord.Status.idle,activity=discord.Streaming(name="YouTube",url='https://www.youtube.com/watch?v=cEjBdJED8Yg&t=542s')) # the bot will default to this status
     print('Bot Ready!')  # user will not see this, it's for the implementer
     print('--------------------------')
 
 
 '''
  This is what the user will type
+ 
  
  when user types !hello 
  this function is called 
