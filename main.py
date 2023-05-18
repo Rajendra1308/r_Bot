@@ -3,8 +3,8 @@ import discord
 
 from discord.ext import commands
 from discord import FFmpegPCMAudio
-
-import main
+from discord.ext.commands import has_permissions, MissingPermissions
+from discord import Member
 
 '''
 
@@ -27,6 +27,7 @@ If you remove the await keyword from the function calls, then the code won't wai
 In short, removing the await keyword may cause the code to execute out of order and lead to unintended consequences.
 '''
 
+
 @client.event
 async def on_ready():
     print('Bot Ready!')  # user will not see this, it's for the implementer
@@ -47,7 +48,7 @@ COMMANDS
 
 @client.command()
 async def hello(ctx):
-    await ctx.send("Hello this is r_Bot!")
+    await ctx.send("Hello this is meee!")
 
 
 @client.command()
@@ -67,8 +68,14 @@ EVENTS
 
 @client.event
 async def on_member_join(member: discord.Member):
-    channel = client.get_channel(1102782529162977372)  # this is channel ID from Discord
+    channel = client.get_channel(1107169359727689728)  # this is channel ID from Discord
 
+
+# @client.event
+# async def on_message(message:discord.Message):
+#     if message.content in ["fuck", "nigga", "fucker", "motherfucker", "profanity"]:
+#         await message.delete()
+#         await message.channel.send("Do not use profanity words otherwise you will be kicked!")
 
 '''
 It will detect when user has left the server and print the message
@@ -77,22 +84,19 @@ It will detect when user has left the server and print the message
 
 @client.event
 async def on_member_remove(member: discord.Member):
-    channel = client.get_channel(1102782529162977372)  # this is channnel ID from Discord
+    channel = client.get_channel(1102782529162977371)  # this is channnel ID from Discord
     await channel.send(f'Goodbye {member.name}!')
-    
-    """
+
+
+"""
     Detect Specific words
-    Listen for message in voice channel 
+    Listen for message in voice channel
     and print the message
-    """
+"""
 
 # @client.event
 # async def on_message(message):
 #     if message.content == "hi":
-
-    
-
-    
 
 
 '''
@@ -127,7 +131,7 @@ async def join(ctx: discord.ext.commands.Context):
         await ctx.send("You must be in a voice channel to run this command!")
 
 
-'''
+'''           
 Pause Song
 '''
 
@@ -149,7 +153,8 @@ Resume Song
 
 @client.command(pass_context=True)
 async def resume(ctx: discord.ext.commands.Context):
-    voice: discord.VoiceProtocol = discord.utils.get(client.voice_clients,guild=ctx.guild)  # where is our bot is , what is it currently playing
+    voice: discord.VoiceProtocol = discord.utils.get(client.voice_clients,
+                                                     guild=ctx.guild)  # where is our bot is , what is it currently playing
     if voice.is_paused():
         voice.resume()
     else:
@@ -203,7 +208,50 @@ async def leave(ctx: discord.ext.commands.Context):
     else:
         await ctx.send("I am not in the voice channel")
 
-    
+
+'''
+This function will kick the members who has the kick permissions true, meaning who can kick other people without our persmission
+
+'''
+
+
+@client.command(pass_context=True)
+@has_permissions(kick_members=True)  #
+async def kick(ctx: discord.ext.commands.Context, member: discord.Member, *, reason=None):
+    await  member.kick(reason=reason)
+    await ctx.send(f'User {member} has been kicked')
+
+
+'''
+If a user who does not have permissions to kick people runs the above command 
+'''
+
+
+@kick.error
+async def kick_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send('You do not have Permissions to kick people!')
+
+
+@client.command(pass_context=True)
+@has_permissions(ban_members=True)  #
+async def ban(ctx: discord.ext.commands.Context, member: discord.Member, *, reason=None):
+    await  member.ban(reason=reason)
+    await ctx.send(f'User {member} has been banned')
+
+
+'''
+If a user who does not have permissions to kick people runs the above command 
+'''
+
+
+@ban.error
+async def ban_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send('You do not have Permissions to ban people!')
+
+
+
 
 '''
 RUN
